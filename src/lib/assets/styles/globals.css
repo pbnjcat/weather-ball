@@ -1,8 +1,8 @@
-@layer reset, variables, theme;
+@layer reset, variables;
 
 @import url('./_reset.css') layer(reset);
-/* @import url('./_variables.css') layer(variables);
-@import url('./_theme.css') layer(theme); */
+@import url('./_variables.css') layer(variables);
+@import url('./_theme.css') layer(theme);
 
 html {
   scroll-behavior: smooth;
@@ -15,6 +15,14 @@ html {
 }
 
 body {
-  font-size: 16px;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body-normal);
+  background-color: var(--color-background);
   transition: color 250ms, background-color 250ms ease;
+}
+
+.container {
+  width: 100%;
+  margin: auto;
+  padding-inline: var(--spacing-small);
 }

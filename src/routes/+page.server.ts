@@ -1,23 +1,20 @@
 import type { PageServerLoad } from './$types';
-import { fetchLocations } from '$lib/services/geocode';
-import type { GeocodeLocation } from '$lib/types';
-import { parseSearchParams } from '$lib/utils';
+import { fetchForecast } from '$lib/services/forecastWeather';
 
-export const load: PageServerLoad = async ({ fetch, url }) => {
-    const params = url.searchParams;
-    const searchRequest = parseSearchParams(params);
+export const load: PageServerLoad = ({ fetch, url }) => {
+    const lat = url.searchParams.get('lat');
+    const lon = url.searchParams.get('lon');
+    const name = url.searchParams.get('name');
 
-    try {
-        const geocodeResponse = await fetchLocations(searchRequest, fetch);
-
-        return { geocodeResponse, searchRequest };
-    } catch (error) {
-        console.error('Error loading data:', error);
-
-        return {
-            geocodeResponse: [] as GeocodeLocation[],
-            searchRequest,
-            error: error instanceof Error ? error.message : 'Unknown error'
-        };
+    if (!lat || !lon) {
+        return { forecast: null, locationName: null };
     }
+
+    return {
+        forecast: fetchForecast(
+            { latitude: +lat, longitude: +lon, name: name ?? '', timezone: 'auto' },
+            fetch
+        ),
+        locationName: name
+    };
 };

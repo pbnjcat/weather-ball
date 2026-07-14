@@ -1,0 +1,53 @@
+:root {
+    /* background and text body colors */
+    --background-color-on-light: oklch(0.9688 0.001 310.33);
+    --background-color-on-dark: oklch(0.27 0.032 256);
+
+    --color-text-on-light: oklch(0.2681 0.0273 251.04);
+    --color-text-muted-on-light: oklch(0.5205 0.0352 249.99);
+    --color-text-on-dark: oklch(0.9443 0.0109 256.7);
+    --color-text-muted-on-dark: oklch(0.76 0.035 257);
+
+    --card-color-on-light: oklch(0.9987 0.0057 264.53);
+    --card-color-on-dark: oklch(0.30943 0.03549 258.358);
+    --card-color-shadow-on-light:
+        0 1px 3px oklch(0.27 0.03 251 / 0.12),
+        0 6px 18px oklch(0.27 0.03 251 / 0.11);
+    --card-color-shadow-on-dark:
+        0 2px 4px oklch(0 0 0 / 0.55),
+        0 8px 20px oklch(0 0 0 / 0.45);
+    --shadow-interactive: 0 1px 2px oklch(0.12 0.03 256 / 0.3);
+
+    --color-border-on-light: oklch(0.89 0.012 256);
+    --color-border-on-dark: oklch(39.122% 0.03815 258.898);
+
+    --color-background-row-selected-on-light: oklch(0.9519 0.0188 255.53);
+    --color-background-row-selected-on-dark: oklch(0.4166 0.05292 257.963);
+
+    /* my colors */
+    --color-primary: oklch(0.6209 0.1698 256.75);
+    --color-secondary: oklch(0.81 0.1525 73.74);
+    --color-primary-on-hover: oklch(0.6264 0.2024 258.26);
+
+    /* typography */
+    --font-family-primary: 'Inter', sans-serif;
+    --font-weight-regular: 400;
+    --font-weight-semi-bold: 600;
+    --font-weight-extra-bold: 800;
+
+    --font-size-body-x-small: 0.75rem;
+    --font-size-body-small: 0.875rem;
+    --font-size-body-normal: 1rem;
+    --font-size-heading-1: 1.75rem;
+    --font-size-heading-2: 1.2rem;
+    --font-size-heading-3: 1.1rem;
+
+    /* spacing */
+    --spacing-xx-large: 3rem;
+    --spacing-x-large: 2rem;
+    --spacing-large: 1.5rem;
+    --spacing-medium: 1rem;
+    --spacing-small: 0.75rem;
+    --spacing-x-small: 0.5rem;
+    --spacing-xx-small: 0.25rem;
+}

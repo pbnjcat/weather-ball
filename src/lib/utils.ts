@@ -1,9 +1,10 @@
-import { DEFAULT_SUGGESTIONS } from '$lib/constants';
 import type { LocationSearchRequest } from './types';
 
-export function getDirectionByDegrees(angle: number) {
-  const directions = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
-  let index = Math.round(((angle %= 360) < 0 ? angle + 360 : angle) / 45) % 8;
+export function degToCompass(deg: number): string {
+  const directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+  const normalized = ((deg % 360) + 360) % 360; // if api doesn't already 
+  const index = Math.round(normalized / 22.5) % 16;
+
   return directions[index];
 }
 
@@ -38,7 +39,7 @@ export function debounceTimeout<T extends (...args: any[]) => void>(
 };
 
 export function parseSearchParams(params: URLSearchParams): LocationSearchRequest {
-  const query = params.get('location') || DEFAULT_SUGGESTIONS[0];
+  const query = params.get('location') ?? '';
 
   return { query };
 }
