@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 232.26 46.16">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6 {
+        fill: #3985ea;
+      }
+
+      .cls-7 {
+        letter-spacing: 0em;
+      }
+
+      .cls-7, .cls-8, .cls-9 {
+        fill: #f7931e;
+      }
+
+      .cls-2 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-3 {
+        letter-spacing: 0em;
+      }
+
+      .cls-4 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-5, .cls-8 {
+        letter-spacing: 0em;
+      }
+
+      .cls-10 {
+        font-family: Geist-Regular, Geist;
+        font-size: 42.15px;
+      }
+
+      .cls-6 {
+        letter-spacing: 0em;
+      }
+    </style>
+  </defs>
+  <text class="cls-10" transform="translate(0 36.04)"><tspan class="cls-2" x="0" y="0">W</tspan><tspan class="cls-6" x="38.15" y="0">e</tspan><tspan class="cls-1" x="61.96" y="0">a</tspan><tspan class="cls-3" x="83.92" y="0">t</tspan><tspan class="cls-4" x="100.19" y="0">h</tspan><tspan class="cls-5" x="124.18" y="0">e</tspan><tspan class="cls-1" x="147.41" y="0">r</tspan><tspan class="cls-7" x="162.12" y="0">b</tspan><tspan class="cls-8" x="187.36" y="0">al</tspan><tspan class="cls-9" x="221" y="0">l</tspan></text>
+</svg>
