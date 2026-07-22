@@ -1,10 +1,10 @@
 import type { PageServerLoad } from './$types';
 import { fetchForecast } from '$lib/services/forecastWeather';
 
-export const load: PageServerLoad = ({ fetch, url }) => {
+export const load: PageServerLoad = ({ fetch, url, params }) => {
+    const { city } = params;
     const lat = url.searchParams.get('lat');
     const lon = url.searchParams.get('lon');
-    const name = url.searchParams.get('name');
 
     if (!lat || !lon) {
         return { forecast: null, locationName: null };
@@ -12,9 +12,8 @@ export const load: PageServerLoad = ({ fetch, url }) => {
 
     return {
         forecast: fetchForecast(
-            { latitude: +lat, longitude: +lon, name: name ?? '', timezone: 'auto' },
+            { latitude: +lat, longitude: +lon, name: city, timezone: 'auto' },
             fetch
         ),
-        locationName: name
     };
 };

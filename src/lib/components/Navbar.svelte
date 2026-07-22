@@ -56,7 +56,9 @@
 
 <header>
 	<nav class="container">
-		<img src={Logo} alt="Logo" class="logo" />
+		<a href="/">
+			<img src={Logo} alt="Logo" class="logo" />
+		</a>
 		<div class="nav-buttons">
 			<a class="github-link" href="https://github.com/pbnjcat/weather-ball">
 				<BrandGithubFilled height={32} width={32} />

@@ -118,7 +118,7 @@
 		border: 1px solid var(--color-border);
 		border-radius: var(--spacing-x-small);
 		box-shadow: var(--card-color-shadow);
-
+		
 		button {
 			display: flex;
 			align-items: center;

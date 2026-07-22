@@ -1,6 +1,5 @@
 import z from 'zod';
 
-// location using lat lon
 export interface LocationSearchRequest {
     query: string;
 }
@@ -17,11 +16,9 @@ export const GeocodeLocationSchema = z.object({
 export const GeocodeResponseSchema = z.object({
     results: z.array(GeocodeLocationSchema).default([])
 });
-
 export type GeocodeLocation = z.infer<typeof GeocodeLocationSchema>;
 export type GeocodeResponse = z.infer<typeof GeocodeResponseSchema>;
 
-// simple wind speed with direction based on degrees
 export const Wind = z.object({
     speed: z.number(),
     direction: z.string()
@@ -51,7 +48,6 @@ export const HourlyWeatherDataPointSchema = z.object({
     weather_code: z.number(),
     wind: Wind
 })
-
 export type HourlyWeatherDataPoint = z.infer<typeof HourlyWeatherDataPointSchema>;
 export const HourlyWeatherSchema = z.array(HourlyWeatherDataPointSchema);
 export type HourlyWeather = z.infer<typeof HourlyWeatherSchema>;
@@ -65,7 +61,6 @@ export const DailyWeatherDataPointSchema = z.object({
     sunrise: z.string(),
     sunset: z.string(),
 })
-
 export type DailyWeatherDataPoint = z.infer<typeof DailyWeatherDataPointSchema>;
 export const DailyWeatherSchema = z.array(DailyWeatherDataPointSchema);
 export type DailyWeather = z.infer<typeof DailyWeatherSchema>;
@@ -103,5 +98,4 @@ export const OpenMeteoForecastResponseSchema = z.object({
         sunset: z.array(z.string()),
     }),
 })
-
 export type OpenMeteoForecastResponse = z.infer<typeof OpenMeteoForecastResponseSchema>;

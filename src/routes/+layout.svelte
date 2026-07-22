@@ -51,10 +51,11 @@
 	});
 
 	function selectCity(location: GeocodeLocation) {
-		const url = new URL(page.url);
+		const slug = encodeURIComponent(location.name.toLowerCase().replace(/\s+/g, '-'));
+
+		const url = new URL(`/${slug}`, page.url.origin);
 		url.searchParams.set('lat', location.latitude.toString());
 		url.searchParams.set('lon', location.longitude.toString());
-		url.searchParams.set('name', location.name);
 
 		query = location.name;
 		searchResults = [];
