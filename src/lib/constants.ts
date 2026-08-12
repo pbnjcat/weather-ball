@@ -84,3 +84,41 @@ export const WEATHER_CODES: Record<number, string> = {
     96: 'Moderate thunderstorm',
     99: 'Heavy thunderstorm with hail'
 };
+
+export type IconVariant = { day: string; night: string } | { icon: string };
+export const WEATHER_CODE_ICONS_MAP: Record<number, IconVariant> = {
+    0: { day: 'clear-day', night: 'clear-night' },
+    1: { day: 'mostly-clear-day', night: 'mostly-clear-night' },
+    2: { day: 'partly-cloudy-day', night: 'partly-cloudy-night' },
+    3: { day: 'overcast-day', night: 'overcast-night' },
+    45: { day: 'fog-day', night: 'fog-night' },
+    48: { day: 'fog-day', night: 'fog-night' },
+    51: { day: 'partly-cloudy-day-drizzle', night: 'partly-cloudy-night-drizzle' },
+    53: { icon: 'drizzle' },
+    55: { icon: 'extreme-drizzle' },
+    56: { day: 'partly-cloudy-day-sleet', night: 'partly-cloudy-night-sleet' },
+    57: { icon: 'extreme-sleet' },
+    61: { day: 'partly-cloudy-day-rain', night: 'partly-cloudy-night-rain' },
+    63: { icon: 'rain' },
+    65: { icon: 'extreme-rain' },
+    66: { icon: 'sleet' },
+    67: { icon: 'sleet' },
+    71: { day: 'partly-cloudy-day-snow', night: 'partly-cloudy-night-snow' },
+    73: { icon: 'snow' },
+    75: { icon: 'extreme-snow' },
+    77: { icon: 'snow' },
+    80: { day: 'partly-cloudy-day-rain', night: 'partly-cloudy-night-rain' },
+    81: { icon: 'rain' },
+    82: { icon: 'extreme-rain' },
+    85: { day: 'partly-cloudy-day-snow', night: 'partly-cloudy-night-snow' },
+    86: { icon: 'extreme-snow' },
+    95: { day: 'thunderstorms-day-drizzle', night: 'thunderstorms-night-drizzle' },
+    96: { icon: 'thunderstorms-rain' },
+    99: { icon: 'thunderstorms-extreme-rain' },
+}
+
+export function getWeatherIconSlug(code: number, isDay: boolean): string {
+    const entry = WEATHER_CODE_ICONS_MAP[code];
+    if (!entry) return 'not-available';
+    return 'icon' in entry ? entry.icon : isDay ? entry.day : entry.night;
+}

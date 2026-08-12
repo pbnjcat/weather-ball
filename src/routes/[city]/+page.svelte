@@ -9,7 +9,6 @@
 	import CircleChevronRightIcon from 'virtual:icons/tabler/circle-chevron-right';
 	import CircleChevronLeftIcon from 'virtual:icons/tabler/circle-chevron-left';
 	import type { PageProps } from './$types';
-	import { WEATHER_CODES } from '$lib/constants';
 	import {
 		convertedTempUnit,
 		convertedPrecipUnit,
