@@ -75,7 +75,6 @@
 			}
 		}
 	}
-
 	if (browser && !document.cookie.includes('tz=')) {
 		document.cookie = `tz=${detectBrowserTimezone()}; path=/; max-age=31536000`;
 	}
