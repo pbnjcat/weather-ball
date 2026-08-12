@@ -2,12 +2,15 @@
 	import '$lib/assets/styles/globals.css';
 	import favicon from '$lib/assets/logo/weatherball-02.svg';
 	import Navbar from '$lib/components/Navbar.svelte';
-	import { debounceTimeout } from '$lib/utils';
+	import Footer from '$lib/components/Footer.svelte';
+	import { debounceTimeout, detectBrowserTimezone } from '$lib/utils';
 	import { fetchLocations } from '$lib/services/geocode';
 	import { DEFAULT_SUGGESTIONS } from '$lib/constants';
 	import type { GeocodeLocation } from '$lib/types';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
+	import { browser } from '$app/environment';
+	import { setUnitPreferenceContext, DEFAULT_PREFERENCES } from '$lib/services/unitPreference';
 
 	let { children } = $props();
 
@@ -46,10 +49,6 @@
 		}
 	});
 
-	$effect(() => {
-		debounceSearch(query);
-	});
-
 	function selectCity(location: GeocodeLocation) {
 		const slug = encodeURIComponent(location.name.toLowerCase().replace(/\s+/g, '-'));
 
@@ -62,6 +61,34 @@
 
 		goto(url, { noScroll: true });
 	}
+
+	let unitPreferences = $state({ ...DEFAULT_PREFERENCES });
+	setUnitPreferenceContext(unitPreferences);
+
+	if (browser) {
+		const saved = localStorage.getItem('unitPreferences');
+		if (saved) {
+			try {
+				Object.assign(unitPreferences, JSON.parse(saved));
+			} catch {
+				// if error return default
+			}
+		}
+	}
+
+	if (browser && !document.cookie.includes('tz=')) {
+		document.cookie = `tz=${detectBrowserTimezone()}; path=/; max-age=31536000`;
+	}
+
+	$effect(() => {
+		if (browser) {
+			localStorage.setItem('unitPreferences', JSON.stringify(unitPreferences));
+		}
+	});
+
+	$effect(() => {
+		debounceSearch(query);
+	});
 </script>
 
 <svelte:head>
@@ -92,9 +119,7 @@
 	{searchError}
 	onSelect={selectCity}
 />
-<main id="main-content" class="container">
+<main id="main-content">
 	{@render children?.()}
 </main>
-
-<style>
-</style>
+<Footer />

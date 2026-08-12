@@ -1,11 +1,11 @@
 <script lang="ts">
 	import type { GeocodeLocation } from '$lib/types';
-	import BrandGithubFilled from 'virtual:icons/tabler/brand-github-filled';
 	import CurrentLocationFilled from 'virtual:icons/tabler/current-location-filled';
 	import CloseX from 'virtual:icons/tabler/x';
 	import { DEFAULT_SUGGESTIONS } from '$lib/constants';
 	import Logo from '$lib/assets/logo/weatherball-01.svg';
 	import ThemeToggle from './ThemeToggle.svelte';
+	import Settings from './Settings.svelte';
 
 	let {
 		searchTerm = $bindable(),
@@ -55,73 +55,68 @@
 <svelte:window onkeydown={onWindowKeydown} />
 
 <header>
-	<nav class="container">
+	<nav>
 		<a href="/">
 			<img src={Logo} alt="Logo" class="logo" />
 		</a>
 		<div class="nav-buttons">
-			<a class="github-link" href="https://github.com/pbnjcat/weather-ball">
-				<BrandGithubFilled height={32} width={32} />
-			</a>
 			<ThemeToggle />
+			<Settings />
 		</div>
 	</nav>
 </header>
-<form class="container" role="search" onsubmit={(e) => e.preventDefault()}>
-	<div class="search-wrapper">
-		<label class={['search-bar', { open: isOpen }]}>
-			<CurrentLocationFilled height={36} width={36} />
-			<input
-				bind:this={searchInput}
-				bind:value={searchTerm}
-				onfocus={() => (isOpen = true)}
-				onkeydown={onInputKeydown}
-				autocomplete="off"
-				type="search"
-				name="location"
-				placeholder="Search City"
-				aria-label="Search city"
-			/>
-			<button
-				type="button"
-				class={['clear-search-icon', { hidden: !searchTerm }]}
-				aria-label="Clear search"
-				onclick={clearSearch}
-			>
-				<CloseX height={36} width={36} />
-			</button>
-			<kbd class="shortcut" aria-hidden="true">⌘K</kbd>
-		</label>
+<form class="search-wrapper" role="search" onsubmit={(e) => e.preventDefault()}>
+	<label class={['search-bar', { open: isOpen }]}>
+		<CurrentLocationFilled height={36} width={36} />
+		<input
+			bind:this={searchInput}
+			bind:value={searchTerm}
+			onfocus={() => (isOpen = true)}
+			onkeydown={onInputKeydown}
+			autocomplete="off"
+			type="search"
+			name="location"
+			placeholder="Search City"
+			aria-label="Search city"
+		/>
+		<button
+			type="button"
+			class={['clear-search-icon', { hidden: !searchTerm }]}
+			aria-label="Clear search"
+			onclick={clearSearch}
+		>
+			<CloseX height={36} width={36} />
+		</button>
+		<kbd class="shortcut" aria-hidden="true">⌘K</kbd>
+	</label>
 
-		{#if isOpen}
-			<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
-			<div class="modal-overlay" onclick={closeSearch}></div>
-			<div class="dropdown">
-				{#if isLoading}
-					<div class="loading">Searching...</div>
-				{:else if searchError}
-					<div class="error">{searchError}</div>
-				{/if}
+	{#if isOpen}
+		<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
+		<div class="modal-overlay" onclick={closeSearch}></div>
+		<div class="dropdown">
+			{#if isLoading}
+				<div class="loading">Searching...</div>
+			{:else if searchError}
+				<div class="error">{searchError}</div>
+			{/if}
 
-				{#if !isLoading && displayResults.length > 0}
-					<ul class="results-list">
-						{#each displayResults as result}
-							<li>
-								<a
-									href="/"
-									aria-label={`Select location ${result.name}`}
-									onclick={(e) => selectLocation(e, result)}
-								>
-									{result.name}
-									{#if result.country}, {result.country}{/if}</a
-								>
-							</li>
-						{/each}
-					</ul>
-				{/if}
-			</div>
-		{/if}
-	</div>
+			{#if !isLoading && displayResults.length > 0}
+				<ul class="results-list">
+					{#each displayResults as result}
+						<li>
+							<a
+								href="/"
+								aria-label={`Select location ${result.name}`}
+								onclick={(e) => selectLocation(e, result)}
+							>
+								{result.name}{#if result.admin1}, {result.admin1}{/if}{#if result.country}, {result.country}{/if}</a
+							>
+						</li>
+					{/each}
+				</ul>
+			{/if}
+		</div>
+	{/if}
 </form>
 
 <style>
@@ -152,23 +147,6 @@
 		display: flex;
 		gap: var(--spacing-small);
 		color: var(--color-background);
-	}
-
-	.github-link {
-		display: flex;
-		padding: var(--spacing-xx-small);
-		color: var(--color-text);
-		background: var(--card-color);
-		border: 1px solid var(--color-border);
-		border-radius: var(--spacing-x-small);
-	}
-
-	.github-link:active {
-		box-shadow: var(--shadow-active);
-	}
-
-	.github-link:focus-visible {
-		box-shadow: 0 0 0 3px oklch(0.62 0.17 256.75 / 0.25);
 	}
 
 	.logo {
@@ -270,10 +248,6 @@
 	}
 
 	@media (hover: hover) {
-		.github-link:hover {
-			background-color: var(--color-background-row-selected);
-			cursor: pointer;
-		}
 		.results-list a:hover {
 			background-color: var(--color-row-hover);
 		}

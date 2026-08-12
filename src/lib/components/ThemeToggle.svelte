@@ -63,13 +63,14 @@
 			{#each options as opt}
 				<li role="none">
 					<button
-						role="menuitemradio"
+						type="button"
 						class="theme-option"
+						role="menuitemradio"
 						aria-checked={preference === opt.value}
 						onclick={() => switchTheme(opt.value)}
 					>
 						<opt.icon class="theme-menu-icon" />
-						{opt.label}
+						<span>{opt.label}</span>
 						{#if preference === opt.value}<Check />{/if}
 					</button>
 				</li>
@@ -79,6 +80,10 @@
 </div>
 
 <style>
+	.theme-menu-wrapper {
+		position: relative;
+	}
+
 	.theme-toggle {
 		display: flex;
 		outline: none;
@@ -96,16 +101,6 @@
 		flex-shrink: 0;
 	}
 
-	.theme-menu-wrapper {
-		position: relative;
-	}
-
-	.menu-overlay {
-		position: fixed;
-		inset: 0;
-		z-index: 40;
-	}
-
 	.theme-menu {
 		position: absolute;
 		right: 0;
@@ -118,7 +113,7 @@
 		border: 1px solid var(--color-border);
 		border-radius: var(--spacing-x-small);
 		box-shadow: var(--card-color-shadow);
-		
+
 		button {
 			display: flex;
 			align-items: center;
@@ -132,11 +127,16 @@
 			cursor: pointer;
 		}
 	}
-
 	.theme-menu button :global(svg) {
 		height: 1.25rem;
 		width: auto;
 		flex-shrink: 0;
+	}
+
+	.menu-overlay {
+		position: fixed;
+		inset: 0;
+		z-index: 40;
 	}
 
 	:global(html[data-theme='dark']) .theme-toggle :global([data-icon='sun']) {

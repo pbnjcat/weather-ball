@@ -1,1 +1,0 @@
-import { WEATHER_FORECAST_API_BASE_URL } from '$lib/constants';
