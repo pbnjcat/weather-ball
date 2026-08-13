@@ -1,22 +1,24 @@
 import z from 'zod';
 
-export interface LocationSearchRequest {
-    query: string;
-}
+export const LocationSearchRequest = z.object({
+    query: z.string()
+});
+export type LocationSearchRequest = z.infer<typeof LocationSearchRequest>
 
 export const GeocodeLocationSchema = z.object({
+    id: z.number(),
     name: z.string(),
-    country: z.string().optional(),
+    country: z.string(),
     latitude: z.number(),
     longitude: z.number(),
     admin1: z.string().optional(),
     timezone: z.string(),
 });
+export type GeocodeLocation = z.infer<typeof GeocodeLocationSchema>;
 
 export const GeocodeResponseSchema = z.object({
     results: z.array(GeocodeLocationSchema).default([])
 });
-export type GeocodeLocation = z.infer<typeof GeocodeLocationSchema>;
 export type GeocodeResponse = z.infer<typeof GeocodeResponseSchema>;
 
 export const Wind = z.object({
@@ -27,11 +29,9 @@ export type Wind = z.infer<typeof Wind>;
 
 // Weather responses 
 export const CurrentWeatherSchema = z.object({
-    time: z.string(),
     temp: z.number(),
     is_day: z.boolean(),
     feels_like: z.number(),
-    humidity: z.number(),
     weather_code: z.number(),
     precipitation: z.number(),
     pressure: z.number(),
@@ -43,6 +43,7 @@ export const HourlyWeatherDataPointSchema = z.object({
     time: z.string(),
     temp: z.number(),
     feels_like: z.number(),
+    dew_point: z.number(),
     is_day: z.boolean(),
     humidity: z.number(),
     precipitation_probability: z.number(),
@@ -67,10 +68,9 @@ export const DailyWeatherSchema = z.array(DailyWeatherDataPointSchema);
 export type DailyWeather = z.infer<typeof DailyWeatherSchema>;
 
 export const OpenMeteoForecastResponseSchema = z.object({
+    timezone: z.string(),
     current: z.object({
-        time: z.string(),
         temperature_2m: z.number(),
-        relative_humidity_2m: z.number(),
         apparent_temperature: z.number(),
         is_day: z.number(),
         precipitation: z.number(),
@@ -85,6 +85,7 @@ export const OpenMeteoForecastResponseSchema = z.object({
         apparent_temperature: z.array(z.number()),
         is_day: z.array(z.number()),
         relative_humidity_2m: z.array(z.number()),
+        dew_point_2m: z.array(z.number()),
         precipitation_probability: z.array(z.number()),
         weather_code: z.array(z.number()),
         wind_speed_10m: z.array(z.number()),

@@ -1,6 +1,6 @@
-import { GEOCODE_BASE_URL } from '$lib/constants';
+import { GEOCODE_BASE_URL, GEOCODE_GET_BASE_URL } from '$lib/constants';
 import type { LocationSearchRequest, GeocodeLocation } from '$lib/types';
-import { GeocodeResponseSchema } from '$lib/types';
+import { GeocodeResponseSchema, GeocodeLocationSchema } from '$lib/types';
 
 export async function fetchLocations(
     data: LocationSearchRequest,
@@ -27,3 +27,19 @@ export async function fetchLocations(
     return parsedData.results || [];
 }
 
+export async function fetchLocationById(
+    id: number,
+    fetchFn = fetch,
+    signal?: AbortSignal
+): Promise<GeocodeLocation> {
+    const url = `${GEOCODE_GET_BASE_URL}?id=${id}`;
+
+    const response = await fetchFn(url, { method: 'GET', signal });
+    if (!response.ok || response.status !== 200) {
+        const errorData = await response.json().catch(() => ({ message: 'Unknown error occurred' }));
+        throw new Error(errorData.message || `Error ${response.status}: ${response.statusText}`);
+    }
+
+    const rawData = await response.json();
+    return GeocodeLocationSchema.parse(rawData);
+}

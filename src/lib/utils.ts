@@ -52,7 +52,7 @@ const precipitationFromMM: Record<PrecipitationUnit, (mm: number) => number> = {
   inches: (mm) => convert(mm, 'millimeters').to('inches')
 };
 export function convertedPrecipUnit(mm: number, unit: PrecipitationUnit): number {
-  return precipitationFromMM[unit](mm);
+  return Number(precipitationFromMM[unit](mm).toFixed(2));
 }
 const precipitationLabels: Record<PrecipitationUnit, string> = {
   mm: 'mm',
@@ -64,7 +64,7 @@ export function precipitationUnitLabel(unit: PrecipitationUnit): string {
 }
 
 function celsiusToFahrenheit(celsius: number) {
-  return Number((convert(celsius, 'celsius').to('fahrenheit')).toFixed(1));
+  return Number((convert(celsius, 'celsius').to('fahrenheit')).toFixed(2));
 }
 export function convertedTempUnit(celsius: number, unit: TemperatureUnit): number {
   return unit === 'fahrenheit' ? celsiusToFahrenheit(celsius) : celsius;
@@ -95,8 +95,14 @@ export function windUnitLabel(unit: WindUnit): string {
   return windLabels[unit];
 }
 
-export function detectBrowserTimezone(): string {
-  return Intl.DateTimeFormat().resolvedOptions().timeZone;
+export function getLiveTimeByTimeZone(timezone: string, timestamp: number): string {
+  return new Intl.DateTimeFormat('en-US', {
+    timeZone: timezone,
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true
+  }).format(new Date(timestamp));
 }
 
 

@@ -3,7 +3,7 @@
 	import favicon from '$lib/assets/logo/weatherball-02.svg';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import Footer from '$lib/components/Footer.svelte';
-	import { debounceTimeout, detectBrowserTimezone } from '$lib/utils';
+	import { debounceTimeout } from '$lib/utils';
 	import { fetchLocations } from '$lib/services/geocode';
 	import { DEFAULT_SUGGESTIONS } from '$lib/constants';
 	import type { GeocodeLocation } from '$lib/types';
@@ -53,8 +53,9 @@
 		const slug = encodeURIComponent(location.name.toLowerCase().replace(/\s+/g, '-'));
 
 		const url = new URL(`/${slug}`, page.url.origin);
-		url.searchParams.set('lat', location.latitude.toString());
-		url.searchParams.set('lon', location.longitude.toString());
+		url.searchParams.set('id', location.id.toString());
+		url.searchParams.set('city', location.name.toString());
+		url.searchParams.set('country', location.country.toString());
 
 		query = location.name;
 		searchResults = [];
@@ -74,9 +75,6 @@
 				// if error return default
 			}
 		}
-	}
-	if (browser && !document.cookie.includes('tz=')) {
-		document.cookie = `tz=${detectBrowserTimezone()}; path=/; max-age=31536000`;
 	}
 
 	$effect(() => {

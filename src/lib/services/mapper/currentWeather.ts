@@ -6,11 +6,9 @@ export function toCurrentWeather(rawData: OpenMeteoForecastResponse): CurrentWea
     // c gets json data from current weather key 
     const c = rawData.current;
     return CurrentWeatherSchema.parse({
-        time: c.time,
         temp: c.temperature_2m,
         is_day: c.is_day === 1,
         feels_like: c.apparent_temperature,
-        humidity: c.relative_humidity_2m,
         weather_code: c.weather_code,
         precipitation: c.precipitation,
         pressure: c.pressure_msl,
