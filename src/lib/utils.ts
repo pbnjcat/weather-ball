@@ -1,4 +1,5 @@
 import type { LocationSearchRequest } from './types';
+import { WEATHER_CODE_ICONS_MAP } from './iconMap';
 import convert from 'convert';
 import type { TemperatureUnit, PrecipitationUnit, WindUnit } from './services/unitPreference';
 
@@ -95,16 +96,30 @@ export function windUnitLabel(unit: WindUnit): string {
   return windLabels[unit];
 }
 
-export function getLiveTimeByTimeZone(timezone: string, timestamp: number): string {
+export function formatTime(timezone: string): Intl.DateTimeFormat {
   return new Intl.DateTimeFormat('en-US', {
     timeZone: timezone,
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
     hour12: true
-  }).format(new Date(timestamp));
+  });
 }
 
+export function formatDate(timezone: string): Intl.DateTimeFormat {
+  return new Intl.DateTimeFormat('en-US', {
+    timeZone: timezone,
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+  });
+}
+
+export function getWeatherIconSlug(code: number, isDay: boolean): string {
+  const entry = WEATHER_CODE_ICONS_MAP[code];
+  if (!entry) return 'not-available';
+  return 'icon' in entry ? entry.icon : isDay ? entry.day : entry.night;
+}
 
 
 
