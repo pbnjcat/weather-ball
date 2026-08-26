@@ -46,7 +46,7 @@
 
 	function selectLocation(e: MouseEvent, location: GeocodeLocation) {
 		e.preventDefault();
-		searchTerm = location.name + ',' + location.country;
+		searchTerm = [location.name, location.admin1, location.country].join(', ');
 		closeSearch();
 		onSelect?.(location);
 	}
@@ -56,7 +56,12 @@
 
 <header>
 	<nav>
-		<a href="/">
+		<a
+			href="/"
+			onclick={() => {
+				searchTerm = '';
+			}}
+		>
 			<img src={Logo} alt="Logo" class="logo" />
 		</a>
 		<div class="nav-buttons">

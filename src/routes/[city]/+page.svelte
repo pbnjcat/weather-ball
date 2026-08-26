@@ -20,10 +20,10 @@
 	import Card from './Card.svelte';
 	import { getUnitPreferenceContext } from '$lib/services/unitPreference';
 	import CurrentWeatherHero from './CurrentWeatherHero.svelte';
-	import WeatherIcon from '$lib/components/WeatherIcon.svelte';
-	import { getWeatherIconSlug } from '$lib/constants';
 
 	let { data }: PageProps = $props();
+	let location = $derived(data.location);
+	let timezone = $derived(data.location?.timezone);
 
 	const unitPreferences = getUnitPreferenceContext();
 </script>
@@ -33,22 +33,44 @@
 		{#await data.forecast}
 			<p>Loading forecast…</p>
 		{:then forecast}
-			<CurrentWeatherHero
-				currentTemp={convertedTempUnit(forecast.current.temp, unitPreferences.temperature)}
-				hiTemp={forecast.daily[0].temp_max}
-				lowTemp={forecast.daily[0].temp_min}
-				weatherCode={forecast.current.weather_code}
-				city={data.city}
-				time={forecast.current.time}
-			/>
+			<div class="content__hero">
+				<CurrentWeatherHero
+					currentTemp={convertedTempUnit(forecast.current.temp, unitPreferences.temperature)}
+					hiTemp={convertedTempUnit(forecast.daily[0].temp_max, unitPreferences.temperature)}
+					lowTemp={convertedTempUnit(forecast.daily[0].temp_min, unitPreferences.temperature)}
+					weatherCode={forecast.current.weather_code}
+					city={location?.name}
+					unit={tempUnitLabel(unitPreferences.temperature)}
+					isDay={forecast.current.is_day}
+					{timezone}
+				/>
+			</div>
 			<div class="card-grid">
 				<Card
 					Icon={ThermometerIcon}
 					label="Feels Like"
 					value={convertedTempUnit(forecast.current.feels_like, unitPreferences.temperature)}
 					unit={tempUnitLabel(unitPreferences.temperature)}
-				/>
-				<Card Icon={DropletIcon} label="Humidity" value={forecast.current.humidity} unit="%" />
+				>
+					{#snippet description()}
+						{#if forecast.current.feels_like < forecast.current.temp}
+							Feels colder than the actual temperature.
+						{:else if forecast.current.feels_like > forecast.current.temp}
+							Feels warmer than the actual temperature.
+						{:else}
+							Feels like the actual temperature.
+						{/if}
+					{/snippet}
+				</Card>
+				<Card Icon={DropletIcon} label="Humidity" value={forecast.hourly[0].humidity} unit="%">
+					{#snippet description()}
+						<p>
+							<span class="dew-point"
+								>{`${convertedTempUnit(forecast.hourly[0].dew_point, unitPreferences.temperature)}`}&deg;
+							</span> Dew point
+						</p>
+					{/snippet}
+				</Card>
 				<Card
 					Icon={WindIcon}
 					label="Wind"
@@ -58,47 +80,26 @@
 				<Card
 					Icon={CloudRainIcon}
 					label="Precipitation"
-					value={convertedPrecipUnit(forecast.current.precipitation, unitPreferences.precipitation)}
+					value={convertedPrecipUnit(
+						forecast.daily[0].precipitation_sum,
+						unitPreferences.precipitation
+					)}
 					unit={precipitationUnitLabel(unitPreferences.precipitation)}
-				/>
+					>{#snippet description()}
+						{'Total precipitation for the day'}
+					{/snippet}</Card
+				>
 
 				<p>Wind Direction: {forecast.current.wind.direction}</p>
-				<WeatherIcon
-					animated={true}
-					slug={getWeatherIconSlug(forecast.current.weather_code, forecast.current.is_day)}
-					style="fill"
-					size={200}
-				/>
 			</div>
-
-			<!-- <h1>Hourly Weather</h1>
-			{#each forecast.hourly as hourly (hourly.time)}
-				<h2>Time: {hourly.time}</h2>
-				<p>Temperature: {hourly.temp}</p>
-				<p>Feels like: {hourly.feels_like}</p>
-				<p>Humidity: {hourly.humidity}</p>
-				<p>Wind: {hourly.wind.speed} {hourly.wind.direction}</p>
-				<p>Weather: {WEATHER_CODES[hourly.weather_code] ?? 'Unknown'}</p>
-			{/each} -->
-			<!-- <h1>Daily Weather</h1>
-			{#each forecast.daily as daily (daily.date)}
-				<h2>Day: {daily.date}</h2>
-				<p>Temperature Max: {daily.temp_max}</p>
-				<p>Temperature Min: {daily.temp_min}</p>
-				<p>Precipitation: {daily.precipitation_sum}</p>
-				<p>Sunrise: {daily.sunrise}</p>
-				<p>Sunset: {daily.sunset}</p>
-			{/each} -->
 		{:catch err}
 			<p>Couldn't load the forecast: {err instanceof Error ? err.message : 'Unknown error'}</p>
 		{/await}
 	{/if}
-
-	<h2>Input a city into the search to get current weather</h2>
 </section>
 
 <style>
-	section {
+	.content__hero {
 		padding-block: var(--spacing-medium);
 	}
 
@@ -106,5 +107,12 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
 		gap: var(--spacing-large);
+	}
+
+	.dew-point {
+		color: var(--color-text-muted-on-light);
+		background-color: var(--color-button-border);
+		border-radius: var(--spacing-small);
+		padding: var(--spacing-xx-small);
 	}
 </style>
