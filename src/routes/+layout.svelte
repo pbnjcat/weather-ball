@@ -57,7 +57,6 @@
 		url.searchParams.set('city', location.name.toString());
 		url.searchParams.set('country', location.country.toString());
 
-		query = location.name;
 		searchResults = [];
 
 		goto(url, { noScroll: true });

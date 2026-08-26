@@ -10,7 +10,6 @@ export function toCurrentWeather(rawData: OpenMeteoForecastResponse): CurrentWea
         is_day: c.is_day === 1,
         feels_like: c.apparent_temperature,
         weather_code: c.weather_code,
-        precipitation: c.precipitation,
         pressure: c.pressure_msl,
         wind: {
             speed: c.wind_speed_10m,

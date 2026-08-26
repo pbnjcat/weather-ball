@@ -33,7 +33,6 @@ export const CurrentWeatherSchema = z.object({
     is_day: z.boolean(),
     feels_like: z.number(),
     weather_code: z.number(),
-    precipitation: z.number(),
     pressure: z.number(),
     wind: Wind
 })
@@ -42,7 +41,6 @@ export type CurrentWeather = z.infer<typeof CurrentWeatherSchema>;
 export const HourlyWeatherDataPointSchema = z.object({
     time: z.string(),
     temp: z.number(),
-    feels_like: z.number(),
     dew_point: z.number(),
     is_day: z.boolean(),
     humidity: z.number(),
@@ -73,7 +71,6 @@ export const OpenMeteoForecastResponseSchema = z.object({
         temperature_2m: z.number(),
         apparent_temperature: z.number(),
         is_day: z.number(),
-        precipitation: z.number(),
         weather_code: z.number(),
         pressure_msl: z.number(),
         wind_speed_10m: z.number(),
@@ -82,7 +79,6 @@ export const OpenMeteoForecastResponseSchema = z.object({
     hourly: z.object({
         time: z.array(z.string()),
         temperature_2m: z.array(z.number()),
-        apparent_temperature: z.array(z.number()),
         is_day: z.array(z.number()),
         relative_humidity_2m: z.array(z.number()),
         dew_point_2m: z.array(z.number()),
@@ -95,8 +91,8 @@ export const OpenMeteoForecastResponseSchema = z.object({
         time: z.array(z.string()),
         temperature_2m_max: z.array(z.number()),
         temperature_2m_min: z.array(z.number()),
-        weather_code: z.array(z.number()),
         precipitation_sum: z.array(z.number()),
+        weather_code: z.array(z.number()),
         sunrise: z.array(z.string()),
         sunset: z.array(z.string()),
     }),

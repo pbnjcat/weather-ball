@@ -53,7 +53,7 @@ const precipitationFromMM: Record<PrecipitationUnit, (mm: number) => number> = {
   inches: (mm) => convert(mm, 'millimeters').to('inches')
 };
 export function convertedPrecipUnit(mm: number, unit: PrecipitationUnit): number {
-  return Number(precipitationFromMM[unit](mm).toFixed(2));
+  return Number(precipitationFromMM[unit](mm).toFixed(3));
 }
 const precipitationLabels: Record<PrecipitationUnit, string> = {
   mm: 'mm',
@@ -65,7 +65,7 @@ export function precipitationUnitLabel(unit: PrecipitationUnit): string {
 }
 
 function celsiusToFahrenheit(celsius: number) {
-  return Number((convert(celsius, 'celsius').to('fahrenheit')).toFixed(2));
+  return Number((convert(celsius, 'celsius').to('fahrenheit')).toFixed(1));
 }
 export function convertedTempUnit(celsius: number, unit: TemperatureUnit): number {
   return unit === 'fahrenheit' ? celsiusToFahrenheit(celsius) : celsius;
@@ -120,10 +120,5 @@ export function getWeatherIconSlug(code: number, isDay: boolean): string {
   if (!entry) return 'not-available';
   return 'icon' in entry ? entry.icon : isDay ? entry.day : entry.night;
 }
-
-
-
-
-
 
 

@@ -13,9 +13,9 @@ export interface Forecast {
 
 const FORECAST_HOURS = 24;
 const FORECAST_DAYS = 10;
-const CURRENT_PARAMS = 'temperature_2m,apparent_temperature,is_day,precipitation,weather_code,pressure_msl,wind_speed_10m,wind_direction_10m';
+const CURRENT_PARAMS = 'temperature_2m,apparent_temperature,is_day,weather_code,pressure_msl,wind_speed_10m,wind_direction_10m';
 const HOURLY_PARAMS = 'temperature_2m,relative_humidity_2m,dew_point_2m,apparent_temperature,is_day,precipitation_probability,weather_code,wind_speed_10m,wind_direction_10m';
-const DAILY_PARAMS = 'temperature_2m_max,temperature_2m_min,weather_code,precipitation_sum,sunrise,sunset';
+const DAILY_PARAMS = 'temperature_2m_max,temperature_2m_min,weather_code,sunrise,sunset,precipitation_sum';
 
 export async function fetchForecast(
     data: GeocodeLocation,

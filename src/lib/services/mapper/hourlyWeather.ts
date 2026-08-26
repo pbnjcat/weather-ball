@@ -8,7 +8,6 @@ export function toHourlyWeather(rawData: OpenMeteoForecastResponse): HourlyWeath
     const dataPoints = h.time.map((time, i) => ({
         time,
         temp: h.temperature_2m[i],
-        feels_like: h.apparent_temperature[i],
         humidity: h.relative_humidity_2m[i],
         dew_point: h.dew_point_2m[i],
         is_day: h.is_day[i] === 1,
