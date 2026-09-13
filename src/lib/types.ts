@@ -8,7 +8,7 @@ export type LocationSearchRequest = z.infer<typeof LocationSearchRequest>
 export const GeocodeLocationSchema = z.object({
     id: z.number(),
     name: z.string(),
-    country: z.string(),
+    country: z.string().optional(),
     latitude: z.number(),
     longitude: z.number(),
     admin1: z.string().optional(),
@@ -23,7 +23,7 @@ export type GeocodeResponse = z.infer<typeof GeocodeResponseSchema>;
 
 export const Wind = z.object({
     speed: z.number(),
-    direction: z.string()
+    angle: z.number()
 })
 export type Wind = z.infer<typeof Wind>;
 

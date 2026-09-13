@@ -1,6 +1,5 @@
 import type { OpenMeteoForecastResponse, CurrentWeather } from '$lib/types';
 import { CurrentWeatherSchema } from '$lib/types';
-import { degToCompass } from '$lib/utils';
 
 export function toCurrentWeather(rawData: OpenMeteoForecastResponse): CurrentWeather {
     // c gets json data from current weather key 
@@ -13,7 +12,7 @@ export function toCurrentWeather(rawData: OpenMeteoForecastResponse): CurrentWea
         pressure: c.pressure_msl,
         wind: {
             speed: c.wind_speed_10m,
-            direction: degToCompass(c.wind_direction_10m)
+            angle: c.wind_direction_10m,
         }
     })
 }

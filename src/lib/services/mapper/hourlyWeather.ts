@@ -15,7 +15,7 @@ export function toHourlyWeather(rawData: OpenMeteoForecastResponse): HourlyWeath
         weather_code: h.weather_code[i],
         wind: {
             speed: h.wind_speed_10m[i],
-            direction: degToCompass(h.wind_direction_10m[i]),
+            angle: h.wind_direction_10m[i],
         }
     }));
 

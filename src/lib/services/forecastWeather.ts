@@ -11,7 +11,7 @@ export interface Forecast {
     daily: DailyWeather;
 }
 
-const FORECAST_HOURS = 24;
+const FORECAST_HOURS = 13;
 const FORECAST_DAYS = 10;
 const CURRENT_PARAMS = 'temperature_2m,apparent_temperature,is_day,weather_code,pressure_msl,wind_speed_10m,wind_direction_10m';
 const HOURLY_PARAMS = 'temperature_2m,relative_humidity_2m,dew_point_2m,apparent_temperature,is_day,precipitation_probability,weather_code,wind_speed_10m,wind_direction_10m';
