@@ -4,10 +4,6 @@
 	import WindIcon from 'virtual:icons/tabler/wind';
 	import CloudRainIcon from 'virtual:icons/tabler/cloud-rain';
 	import LungsIcon from 'virtual:icons/tabler/lungs';
-	import CalendarWeekIcon from 'virtual:icons/tabler/calendar-week';
-	import ClockIcon from 'virtual:icons/tabler/clock';
-	import CircleChevronRightIcon from 'virtual:icons/tabler/circle-chevron-right';
-	import CircleChevronLeftIcon from 'virtual:icons/tabler/circle-chevron-left';
 	import type { PageProps } from './$types';
 	import {
 		convertedTempUnit,
@@ -15,11 +11,14 @@
 		convertedWindUnit,
 		tempUnitLabel,
 		windUnitLabel,
-		precipitationUnitLabel
+		precipitationUnitLabel,
+		degToCompass
 	} from '$lib/utils';
 	import Card from './Card.svelte';
 	import { getUnitPreferenceContext } from '$lib/services/unitPreference';
 	import CurrentWeatherHero from './CurrentWeatherHero.svelte';
+	import ForecastCarousel from './ForecastCarousel.svelte';
+	import ForecastWeeklyTable from './ForecastWeeklyTable.svelte';
 
 	let { data }: PageProps = $props();
 	let location = $derived(data.location);
@@ -33,64 +32,70 @@
 		{#await data.forecast}
 			<p>Loading forecast…</p>
 		{:then forecast}
-			<div class="content__hero">
-				<CurrentWeatherHero
-					currentTemp={convertedTempUnit(forecast.current.temp, unitPreferences.temperature)}
-					hiTemp={convertedTempUnit(forecast.daily[0].temp_max, unitPreferences.temperature)}
-					lowTemp={convertedTempUnit(forecast.daily[0].temp_min, unitPreferences.temperature)}
-					weatherCode={forecast.current.weather_code}
-					city={location?.name}
-					unit={tempUnitLabel(unitPreferences.temperature)}
-					isDay={forecast.current.is_day}
-					{timezone}
-				/>
-			</div>
-			<div class="card-grid">
-				<Card
-					Icon={ThermometerIcon}
-					label="Feels Like"
-					value={convertedTempUnit(forecast.current.feels_like, unitPreferences.temperature)}
-					unit={tempUnitLabel(unitPreferences.temperature)}
-				>
-					{#snippet description()}
-						{#if forecast.current.feels_like < forecast.current.temp}
-							Feels colder than the actual temperature.
-						{:else if forecast.current.feels_like > forecast.current.temp}
-							Feels warmer than the actual temperature.
-						{:else}
-							Feels like the actual temperature.
-						{/if}
-					{/snippet}
-				</Card>
-				<Card Icon={DropletIcon} label="Humidity" value={forecast.hourly[0].humidity} unit="%">
-					{#snippet description()}
-						<p>
-							<span class="dew-point"
-								>{`${convertedTempUnit(forecast.hourly[0].dew_point, unitPreferences.temperature)}`}&deg;
-							</span> Dew point
-						</p>
-					{/snippet}
-				</Card>
-				<Card
-					Icon={WindIcon}
-					label="Wind"
-					value={convertedWindUnit(forecast.current.wind.speed, unitPreferences.wind)}
-					unit={windUnitLabel(unitPreferences.wind)}
-				/>
-				<Card
-					Icon={CloudRainIcon}
-					label="Precipitation"
-					value={convertedPrecipUnit(
-						forecast.daily[0].precipitation_sum,
-						unitPreferences.precipitation
-					)}
-					unit={precipitationUnitLabel(unitPreferences.precipitation)}
-					>{#snippet description()}
-						{'Total precipitation for the day'}
-					{/snippet}</Card
-				>
-
-				<p>Wind Direction: {forecast.current.wind.direction}</p>
+			<div class="content">
+				<div class="content__hero">
+					<CurrentWeatherHero
+						currentTemp={convertedTempUnit(forecast.current.temp, unitPreferences.temperature)}
+						hiTemp={convertedTempUnit(forecast.daily[0].temp_max, unitPreferences.temperature)}
+						lowTemp={convertedTempUnit(forecast.daily[0].temp_min, unitPreferences.temperature)}
+						weatherCode={forecast.current.weather_code}
+						city={location?.name}
+						unit={tempUnitLabel(unitPreferences.temperature)}
+						isDay={forecast.current.is_day}
+						{timezone}
+					/>
+				</div>
+				<ForecastCarousel hours={forecast.hourly} />
+				<ForecastWeeklyTable daily={forecast.daily} />
+				<div class="card-grid">
+					<Card
+						Icon={ThermometerIcon}
+						label="Feels Like"
+						value={convertedTempUnit(forecast.current.feels_like, unitPreferences.temperature)}
+						unit={tempUnitLabel(unitPreferences.temperature)}
+					>
+						{#snippet description()}
+							{#if forecast.current.feels_like < forecast.current.temp}
+								<p>Feels colder than the actual temperature.</p>
+							{:else if forecast.current.feels_like > forecast.current.temp}
+								<p>Feels warmer than the actual temperature.</p>
+							{:else}
+								<p>Feels like the actual temperature.</p>
+							{/if}
+						{/snippet}
+					</Card>
+					<Card Icon={DropletIcon} label="Humidity" value={forecast.hourly[0].humidity} unit="%">
+						{#snippet description()}
+							<p>
+								<span class="dew-point"
+									>{`${convertedTempUnit(forecast.hourly[0].dew_point, unitPreferences.temperature)}`}
+									{tempUnitLabel(unitPreferences.temperature)}
+								</span> Dew point.
+							</p>
+						{/snippet}
+					</Card>
+					<Card
+						Icon={WindIcon}
+						label="Wind"
+						value={convertedWindUnit(forecast.current.wind.speed, unitPreferences.wind)}
+						unit={windUnitLabel(unitPreferences.wind)}
+						>{#snippet description()}
+							<p>From {degToCompass(forecast.current.wind.angle)}.</p>
+						{/snippet}</Card
+					>
+					<Card
+						Icon={CloudRainIcon}
+						label="Precipitation"
+						value={convertedPrecipUnit(
+							forecast.daily[0].precipitation_sum,
+							unitPreferences.precipitation
+						)}
+						unit={precipitationUnitLabel(unitPreferences.precipitation)}
+						>{#snippet description()}
+							{'Total precipitation for the day.'}
+						{/snippet}</Card
+					>
+				</div>
 			</div>
 		{:catch err}
 			<p>Couldn't load the forecast: {err instanceof Error ? err.message : 'Unknown error'}</p>
@@ -99,8 +104,11 @@
 </section>
 
 <style>
-	.content__hero {
-		padding-block: var(--spacing-medium);
+	.content {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-medium);
+		margin-block: var(--spacing-medium);
 	}
 
 	.card-grid {
@@ -110,8 +118,8 @@
 	}
 
 	.dew-point {
-		color: var(--color-text-muted-on-light);
-		background-color: var(--color-button-border);
+		color: var(--color-text);
+		background-color: var(--color-background);
 		border-radius: var(--spacing-small);
 		padding: var(--spacing-xx-small);
 	}

@@ -17,7 +17,7 @@
 		<Icon class="card-icon-svg" />
 		<h3>{label}</h3>
 	</div>
-	<p class="card__value">{value}<span class="unit">{unit}</span></p>
+	<p class="card__value">{value} <span class="unit">{unit}</span></p>
 	{#if description}
 		<p class="card__description">{@render description()}</p>
 	{/if}
@@ -44,7 +44,7 @@
 	.card__header h3 {
 		font-size: var(--font-size-body-normal);
 		font-weight: var(--font-weight-regular);
-		color: var(--color-text-muted);
+		color: var(--color-text);
 	}
 
 	.card .card__description {
@@ -54,7 +54,8 @@
 	}
 
 	.card__value {
-		padding-block: var(--spacing-medium);
+		color: var(--color-text);
+		padding-block: var(--spacing-x-small);
 		font-weight: var(--font-weight-regular);
 		font-size: var(--font-size-heading-1);
 	}

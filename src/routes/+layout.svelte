@@ -55,7 +55,7 @@
 		const url = new URL(`/${slug}`, page.url.origin);
 		url.searchParams.set('id', location.id.toString());
 		url.searchParams.set('city', location.name.toString());
-		url.searchParams.set('country', location.country.toString());
+		url.searchParams.set('country', location.country ?? '');
 
 		searchResults = [];
 

@@ -21,7 +21,7 @@
 		align-items: center;
 		gap: var(--spacing-small);
 		border-top: 1px solid var(--color-border);
-		margin-top: var(--spacing-xx-large);
+		margin-top: var(--spacing-x-large);
 		padding-block: var(--spacing-medium);
 	}
 

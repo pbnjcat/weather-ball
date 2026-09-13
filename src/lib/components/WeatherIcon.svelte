@@ -44,5 +44,5 @@
 {#if !src}
 	<div style={`width:${size}px;height:${size}px`}></div>
 {:else}
-	<img {src} alt={slug} width={size} height={size} />
+	<img {src} alt={slug} width={size} loading="lazy" height={size} />
 {/if}
